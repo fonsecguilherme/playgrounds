@@ -1,0 +1,27 @@
+name: poc_caed
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  auto_route: ^9.2.2
+  injectable: ^2.5.0
+  get_it:
+  json_annotation: ^4.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  injectable_generator:  
+  build_runner:
+  auto_route_generator:
+  json_serializable: ^6.9.0
+
+flutter:
+  uses-material-design: true
