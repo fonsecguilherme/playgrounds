@@ -1,30 +1,28 @@
-import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
 
-void main(List<String> arguments) {
-  final repo = Repo();
+// void main(List<String> arguments) {
+//   final repo = Repo();
 
-  print('Olá mundo');
+//   print('Olá mundo');
 
-  print('--- RESPOSTA DO DIO ABAIXO ---');
+//   print('--- RESPOSTA DO DIO ABAIXO ---');
 
-  print(repo.getData());
+//   print(repo.getData());
 
-try {
-  
-} catch (e) {
-  print(e);
-}
-}
+// try {
 
-class Repo {
-  final dio = Dio();
-  Future<void> getData() async {
-    String url = 'https://fakestoreapi.com/products';
+// } catch (e) {
+//   print(e);
+// }
+// }
 
-    final response = await dio.get(url);
+// class Repo {
+//   final dio = Dio();
+//   Future<void> getData() async {
+//     String url = 'https://fakestoreapi.com/products';
 
-    print(response);
-  }
-}
+//     final response = await dio.get(url);
 
-
+//     print(response);
+//   }
+// }
