@@ -1,7 +1,17 @@
-import 'package:poo_testing/models/programador.dart';
+import 'package:poo_testing/models/heranca_programador.dart';
 
 void main(List<String> arguments) {
-  //! ao usar construtor sem o const, mesmo com mesmo valores, eles apontarão para valores diferentes
+// heranca
+
+ HerancaFuncionario funcionario = HerancaFuncionario();
+HerancaFuncionario programador = HerancaProgramador();
+HerancaFuncionario gerente = HerancaGerente();
+final startup = Startup([funcionario, programador, gerente]);
+startup.novoProjeto();
+
+//-----------------------------------------------------------------------------------------------
+  /*
+    //! ao usar construtor sem o const, mesmo com mesmo valores, eles apontarão para valores diferentes
   final programador1 = Programador(nome: 'Guilherme');
   final programador2 = Programador(nome: 'Guilherme');
 
@@ -15,4 +25,6 @@ void main(List<String> arguments) {
 
   print(
       'Cconstrutor const, são iguais? == não sobrescrito ${programadorconst1 == programadorconst2}');
+
+ */
 }
