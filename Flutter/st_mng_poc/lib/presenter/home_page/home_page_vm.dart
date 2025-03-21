@@ -28,7 +28,7 @@
 import 'package:flutter/material.dart';
 import 'package:st_mng_poc/dto/user_dto.dart';
 
-import '../repository/user_repository.dart';
+import '../../repository/user_repository.dart';
 import 'home_page_states.dart';
 
 /// Alternativa 2
