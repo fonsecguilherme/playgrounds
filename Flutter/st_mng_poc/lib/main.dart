@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:st_mng_poc/database.dart';
 
 import 'presenter/navigation_page/navigation_page.dart';
 
-void main() => runApp(MaterialApp(
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final database = AppDatabase();
+
+  await database
+      .into(database.users)
+      .insert(UsersCompanion.insert(name: 'Guilherme', age: 29));
+
+  List<User> allUsers = await database.select(database.users).get();
+
+  print('items in database: $allUsers');
+
+  runApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const NavigationPage(),
-    ));
+    ),
+  );
+}
