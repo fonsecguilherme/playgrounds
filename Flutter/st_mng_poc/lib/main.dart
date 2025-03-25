@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:st_mng_poc/database.dart';
 
@@ -7,13 +9,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = AppDatabase();
 
-  await database
-      .into(database.users)
-      .insert(UsersCompanion.insert(name: 'Guilherme', age: 29));
+  // await database
+  //     .into(database.users)
+  //     .insert(UsersCompanion.insert(name: 'Guilherme', age: 29));
 
   List<User> allUsers = await database.select(database.users).get();
 
-  print('items in database: $allUsers');
+  log('items in database: $allUsers');
 
   runApp(
     MaterialApp(
