@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:st_mng_poc/presenter/home_page/home_page.dart';
+import 'package:st_mng_poc/presenter/navigation_page/navigation_state.dart';
+import 'package:st_mng_poc/presenter/navigation_page/navigation_vm.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -8,18 +11,55 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> {
+  late final NavigationVm _vm;
+
   @override
-  Widget build(BuildContext context) => Scaffold(
-        bottomNavigationBar: BottomNavigationBar(items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Fav'),
-        ]),
+  void initState() {
+    super.initState();
+
+    _vm = NavigationVm();
+  }
+
+  @override
+  Widget build(BuildContext context) => ValueListenableBuilder(
+        valueListenable: _vm.state,
+        builder: (context, state, _) => Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text('State Management'),
+            backgroundColor: Colors.red,
+          ),
+          body: IndexedStack(
+            index: state.index,
+            children: const [
+              HomePage(),
+              Center(child: Text('Tela de favoritos')),
+            ],
+          ),
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: state.index,
+            onDestinationSelected: (index) {
+              switch (index) {
+                case 0:
+                  _vm.changeTab(NavigationState.home());
+                  break;
+                case 1:
+                  _vm.changeTab(NavigationState.favorites());
+                  break;
+                default:
+                  _vm.changeTab(NavigationState.home());
+              }
+            },
+            destinations: const [
+              NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+              NavigationDestination(icon: Icon(Icons.star), label: 'Fav'),
+            ],
+          ),
+        ),
       );
 
   @override
   void dispose() {
-    //
-
     super.dispose();
   }
 }
