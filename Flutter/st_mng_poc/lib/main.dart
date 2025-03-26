@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:st_mng_poc/database.dart';
 
 import 'presenter/navigation_page/navigation_page.dart';
@@ -20,7 +21,10 @@ void main() async {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const NavigationPage(),
+      home: Provider(
+        create: (context) => AppDatabase(),
+        child: const NavigationPage(),
+      ),
     ),
   );
 }
