@@ -25,7 +25,10 @@
 //   }
 // }
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:st_mng_poc/database.dart';
 import 'package:st_mng_poc/dto/user_dto.dart';
 
 import '../../repository/user_repository.dart';
@@ -34,8 +37,11 @@ import 'home_page_states.dart';
 /// Alternativa 2
 ///
 class HomePageVm {
+  HomePageVm({required this.database});
+
   var state = ValueNotifier<HomeScreenState>(HomeScreenState.initial());
   final userRepository = UserRepository();
+  final AppDatabase database;
   List<UserDto> users = [];
 
   Future<void> onInit() async {
@@ -70,5 +76,20 @@ class HomePageVm {
     } catch (e) {
       state.value = HomeScreenState.error();
     }
+  }
+
+  Future<void> createUser({
+    required String name,
+    required String age,
+  }) async {
+    if (name.isNotEmpty && age.isNotEmpty) {
+      final parseAge = int.parse(age);
+
+      await database.into(database.users).insert(
+            UsersCompanion.insert(name: name, age: parseAge),
+          );
+    }
+
+    log('VM nome: $name e idade $age');
   }
 }
