@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:st_mng_poc/database.dart';
 
 import 'home_page_states.dart';
 import 'home_page_vm.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final AppDatabase database;
+
+  const HomePage({super.key, required this.database});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -12,11 +17,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final HomePageVm _vm;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _vm = HomePageVm();
+    _vm = HomePageVm(database: widget.database);
   }
 
   @override
@@ -37,12 +44,29 @@ class _HomePageState extends State<HomePage> {
               return Center(child: const Text('Estado inicial...'));
             }
 
-            if (state.user.isNotEmpty) {
-              return Center(
-                child: Text(
-                  'Estado de sucesso... ${state.user.first.name} '
-                  'e a idade é: ${state.user.first.age}',
-                ),
+            if (state.status == UserStatus.autenticado) {
+              return Column(
+                children: [
+                  Text('Guilherme'),
+                  Text('Guilherme'),
+                  TextField(
+                    controller: nameController,
+                  ),
+                  TextField(
+                    controller: ageController,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      log('enviando usuário...');
+
+                      _vm.createUser(
+                        name: nameController.text,
+                        age: ageController.text,
+                      );
+                    },
+                    child: Text('Criar usuário'),
+                  ),
+                ],
               );
             }
 
