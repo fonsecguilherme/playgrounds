@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:st_mng_poc/database.dart';
+import 'package:st_mng_poc/presenter/favorites_page/favorite_page.dart';
 import 'package:st_mng_poc/presenter/home_page/home_page.dart';
 import 'package:st_mng_poc/presenter/navigation_page/navigation_state.dart';
 import 'package:st_mng_poc/presenter/navigation_page/navigation_vm.dart';
@@ -12,6 +15,8 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   late final NavigationVm _vm;
+
+  AppDatabase get database => context.read<AppDatabase>();
 
   @override
   void initState() {
@@ -29,13 +34,11 @@ class _NavigationPageState extends State<NavigationPage> {
             title: const Text('State Management'),
             backgroundColor: Colors.red,
           ),
-          body: IndexedStack(
-            index: state.index,
-            children: const [
-              HomePage(),
-              Center(child: Text('Tela de favoritos')),
-            ],
-          ),
+          body: switch (state.index) {
+            0 => HomePage(database: database),
+            1 => FavoritePage(database: database),
+            _ => SizedBox.shrink(),
+          },
           bottomNavigationBar: NavigationBar(
             selectedIndex: state.index,
             onDestinationSelected: (index) {
