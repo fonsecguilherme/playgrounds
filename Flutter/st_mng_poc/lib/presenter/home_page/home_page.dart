@@ -1,36 +1,34 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:st_mng_poc/database.dart';
+import 'package:provider/provider.dart';
 
 import 'home_page_states.dart';
 import 'home_page_vm.dart';
 
 class HomePage extends StatefulWidget {
-  final AppDatabase database;
-
-  const HomePage({super.key, required this.database});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  late final HomePageVm _vm;
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
+
+  HomePageVm get _homePageVm => context.read<HomePageVm>();
 
   @override
   void initState() {
     super.initState();
-    _vm = HomePageVm(database: widget.database);
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.white,
         body: ValueListenableBuilder(
-          valueListenable: _vm.state,
+          valueListenable: _homePageVm.state,
           builder: (context, state, _) {
             if (state.status == UserStatus.error) {
               return Center(child: Text('deu erroooooooooooooooooooooooo'));
@@ -59,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       log('enviando usuário...');
 
-                      _vm.createUser(
+                      _homePageVm.createUser(
                         name: nameController.text,
                         age: ageController.text,
                       );
@@ -92,19 +90,19 @@ class _HomePageState extends State<HomePage> {
           children: [
             FloatingActionButton(
               onPressed: () {
-                _vm.resetAppState();
+                _homePageVm.resetAppState();
               },
               child: const Text('initial'),
             ),
             FloatingActionButton(
               onPressed: () {
-                _vm.errorUserData();
+                _homePageVm.errorUserData();
               },
               child: const Text('erro'),
             ),
             FloatingActionButton(
               onPressed: () {
-                _vm.onRefreshUserData();
+                _homePageVm.onRefreshUserData();
               },
               child: const Text('success'),
             ),
