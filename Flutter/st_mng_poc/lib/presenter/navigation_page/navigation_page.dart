@@ -35,8 +35,8 @@ class _NavigationPageState extends State<NavigationPage> {
             backgroundColor: Colors.red,
           ),
           body: switch (state.index) {
-            0 => HomePage(database: database),
-            1 => FavoritePage(database: database),
+            0 => HomePage(),
+            1 => FavoritePage(),
             _ => SizedBox.shrink(),
           },
           bottomNavigationBar: NavigationBar(
