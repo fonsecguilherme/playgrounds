@@ -28,9 +28,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:st_mng_poc/database.dart';
 import 'package:st_mng_poc/dto/user_dto.dart';
 
+import '../../domain/i_database.dart';
 import '../../repository/user_repository.dart';
 import 'home_page_states.dart';
 
@@ -41,7 +41,7 @@ class HomePageVm {
 
   var state = ValueNotifier<HomeScreenState>(HomeScreenState.initial());
   final userRepository = UserRepository();
-  final AppDatabase database;
+  final IDatabase database;
   List<UserDto> users = [];
 
   Future<void> onInit() async {
@@ -84,10 +84,9 @@ class HomePageVm {
   }) async {
     if (name.isNotEmpty && age.isNotEmpty) {
       final parseAge = int.parse(age);
+      final user = UserDto(name: name, age: parseAge);
 
-      await database.into(database.users).insert(
-            UsersCompanion.insert(name: name, age: parseAge),
-          );
+      await database.insert(user.toCompanion());
     }
 
     log('VM nome: $name e idade $age');

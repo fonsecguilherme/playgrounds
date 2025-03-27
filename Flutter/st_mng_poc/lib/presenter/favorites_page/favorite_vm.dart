@@ -1,18 +1,24 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:st_mng_poc/database.dart';
+import 'package:st_mng_poc/dto/user_dto.dart';
 import 'package:st_mng_poc/presenter/favorites_page/favorite_page_states.dart';
 
+import '../../domain/i_database.dart';
+
 class FavoriteVM {
-  final AppDatabase database;
+  final IDatabase database;
   final ValueNotifier<FavoritePageStates> state;
 
   FavoriteVM({required this.database})
       : state = ValueNotifier<FavoritePageStates>(FavoritePageStates.initial());
 
-  List<User> users = [];
+  List<UserDto> users = [];
 
   Future<void> fetchData() async {
-    users = await database.select(database.users).get();
+    users = await database.select<UserDto>();
+
+    log('Items in database $users');
 
     if (users.isEmpty) {
       state.value = FavoritePageStates.initial();
