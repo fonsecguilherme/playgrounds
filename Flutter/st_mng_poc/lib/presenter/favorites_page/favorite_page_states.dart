@@ -1,7 +1,7 @@
-import '../../database.dart';
+import '../../dto/user_dto.dart';
 
 class FavoritePageStates {
-  final List<User> users;
+  final List<UserDto> users;
 
   FavoritePageStates({
     this.users = const [],
@@ -9,7 +9,8 @@ class FavoritePageStates {
 
   factory FavoritePageStates.initial() => FavoritePageStates();
 
-  factory FavoritePageStates.populated(List<User> users) => FavoritePageStates(
+  factory FavoritePageStates.populated(List<UserDto> users) =>
+      FavoritePageStates(
         users: users,
       );
 }
