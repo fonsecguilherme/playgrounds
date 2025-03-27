@@ -25,6 +25,6 @@ class DriftDatabase implements IDatabase {
       final users = await _database.select(_database.users).get();
       return users.map((user) => UserDto.fromDatabase(user) as T).toList();
     }
-    throw Exception('Unsupported type for select');
+    throw Exception('O tipo passado para o banco não é suportado');
   }
 }
