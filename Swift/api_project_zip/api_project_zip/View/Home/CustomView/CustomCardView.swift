@@ -5,7 +5,7 @@
 //  Created by Guilherme Fonseca on 05/04/25.
 //
 
-import SwiftUICore
+import SwiftUI
 
 struct CustomCardView: View {
     let logradouro: String
@@ -21,7 +21,10 @@ struct CustomCardView: View {
             Text("\(cidade) - \(estado)")
         }
         .padding(16.0)
-        .background(Color.red)
-        
+        .background(Color.purple)
+        .clipShape(RoundedRectangle(cornerRadius: 20.0))
+        .overlay(RoundedRectangle(cornerRadius: 20.0)
+            .stroke(Color.gray  , lineWidth: 4)
+        )
     }
 }
