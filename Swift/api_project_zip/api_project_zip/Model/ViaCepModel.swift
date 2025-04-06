@@ -14,4 +14,9 @@ struct ViaCepModel: Codable {
     let cep, logradouro, complemento, unidade: String
     let bairro, localidade, uf, estado: String
     let regiao, ddd: String
+    
+    
+    var complementoOrDefault: String {
+          complemento.isEmpty ? "Sem complemento" : complemento
+      }
 }
