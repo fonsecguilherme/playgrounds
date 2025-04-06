@@ -15,9 +15,16 @@ class HomePageVM: ObservableObject {
     //@Published indica que qualquer view que esteja observando a propriedade "address" será notificada quando ela mudar.
 
     @Published var address: ViaCepModel?
-    @Published var error: Error?
+    @Published var isLoading: Bool = false
+    @Published var errorMessage: String? = nil
+    
+    var safeAddress: ViaCepModel {
+          address ?? .empty
+      }
 
     func fetchAddress(zip: Int) {
+        
+        isLoading = true
 
         //Verificando se a url é válida...
         guard let url = URL(string: "https://viacep.com.br/ws/\(zip)/json/") else {
@@ -37,12 +44,16 @@ class HomePageVM: ObservableObject {
                 
                 DispatchQueue.main.async {
                     self.address = parsed
-                    }
+                    self.isLoading = false
+                }
             } catch {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Erro ao obter os dados da API"
+                    self.isLoading = false
+                }
                 print(error)
             }
         }
         task.resume()
     }
-
 }
