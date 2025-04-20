@@ -17,12 +17,13 @@ class HomePageVM: ObservableObject {
     @Published var address: ViaCepModel?
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
+    @Published var resetSearch: Bool = false
     
     var safeAddress: ViaCepModel {
           address ?? .empty
       }
 
-    func fetchAddress(zip: Int) {
+    func fetchAddress(zip: String) {
         
         isLoading = true
 
