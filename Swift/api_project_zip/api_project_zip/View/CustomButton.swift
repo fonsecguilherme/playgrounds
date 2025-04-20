@@ -10,41 +10,22 @@ import SwiftUI
 struct CustomButton: View {
     
     let zipValue: String
+    let buttonTextLabel: String
     let vm: HomePageVM
     
     
     var body: some View {
-        Button("Procurar...", systemImage: "arrow.right.circle") {
-            if let zipInt = Int(zipValue) {
-                
-                print("inteiro")
-                vm.fetchAddress(zip: zipInt)
-            } else {
-                print("inteiro")
-                vm.errorMessage = "CEP inválido"
-            }
+        Button(buttonTextLabel, systemImage: "arrow.right.circle") {
+            vm.fetchAddress(zip: zipValue)
         }
         .buttonStyle(.bordered)
         .background(.purple)
         .clipShape(RoundedRectangle(cornerRadius: 20.0))
         .tint(.white)
         .padding()
-        
-//        Button {
-//            if let zipInt = Int(zipValue) {
-////                   vm.fetchAddress(zip: zipInt)
-//               } else {
-////                   vm.errorMessage = "CEP inválido"
-//               }
-//        } label: {
-//            Label("Procurar...", systemImage: "arrow.right.circle")
-//                .buttonStyle(.bordered)
-//                .background(.purple)
-//                .tint(.white)
-//        }
     }
 }
 
 #Preview{
-    CustomButton(zipValue:"123456789", vm: HomePageVM())
+    CustomButton(zipValue:"123456789", buttonTextLabel: "Procurar...", vm: HomePageVM())
 }
