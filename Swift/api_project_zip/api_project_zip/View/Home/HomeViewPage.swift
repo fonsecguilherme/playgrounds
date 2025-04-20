@@ -24,14 +24,17 @@ struct HomeViewPage: View{
             .keyboardType(.numberPad)
             .textFieldStyle(.roundedBorder)
             .padding()
-            CustomButton(zipValue: zipValue, vm: vm)
+            CustomButton(zipValue: zipValue,buttonTextLabel: "Procurar..." , vm: vm)
             Group {
                 if vm.isLoading {
                     ProgressView("Carregando...")
                 } else if let message = vm.errorMessage {
                     Text(message)
                 } else if vm.address != nil {
-                    CustomCardView(logradouro: vm.safeAddress.logradouro, cep: vm.safeAddress.cep, cidade: String(vm.safeAddress.cep), estado: vm.safeAddress.estado)
+                    
+                    ResultView(vm: vm)
+                    
+//                    CustomCardView(logradouro: vm.safeAddress.logradouro, cep: vm.safeAddress.cep, cidade: String(vm.safeAddress.cep), estado: vm.safeAddress.estado)
                 } else {
                     Text("")
                 }
@@ -42,8 +45,9 @@ struct HomeViewPage: View{
 }
 
 #Preview {
-    //    CustomCardView(logradouro: "Casinha do guilherme", cep: "57305752", cidade: "Arapiraca", estado: "Alagoas")
-    
-    HomeViewPage().body
+    let vm = HomePageVM()
+      vm.address = ViaCepModel(cep: "57305752", logradouro: "Casinha do guilherme", complemento: "Arapiraca", unidade: "Alagoas", bairro: "não possui", localidade: "cavaco", uf: "nordeste", estado: "AL", regiao: "NE", ddd: "79")
+      
+      return ResultView(vm: vm)
     
 }
