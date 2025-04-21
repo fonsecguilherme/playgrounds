@@ -12,7 +12,7 @@ struct ResultView: View {
     
     var body: some View {
         VStack {
-            CustomCardView( logradouro: vm.safeAddress.logradouro, cep: vm.safeAddress.cep, cidade: String(vm.safeAddress.cep), estado: vm.safeAddress.estado)
+            CustomCardView(logradouro: vm.safeAddress.logradouro, cep: vm.safeAddress.cep, cidade: String(vm.safeAddress.cep), estado: vm.safeAddress.estado)
                 .padding()
         }
     }
