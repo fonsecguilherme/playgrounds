@@ -79,8 +79,8 @@ class HomePageVM: ObservableObject {
                 }
 
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-                       json["erro"] != nil {
+                    if let addressResult = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                       addressResult["erro"] != nil {
                         DispatchQueue.main.async {
                             self.errorMessage = "CEP inválido."
                             self.isLoading = false
@@ -89,10 +89,10 @@ class HomePageVM: ObservableObject {
                         return
                     }
 
-                    let parsed = try JSONDecoder().decode(ViaCepModel.self, from: data)
+                    let parsedAddress = try JSONDecoder().decode(ViaCepModel.self, from: data)
 
                     DispatchQueue.main.async {
-                        self.address = parsed
+                        self.address = parsedAddress
                         self.isLoading = false
                     }
 
