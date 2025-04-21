@@ -24,7 +24,6 @@ class HomePageVM: ObservableObject {
       }
 
     func fetchAddress(zip: String) {
-        
         isLoading = true
 
         //Verificando se a url é válida...
@@ -32,29 +31,95 @@ class HomePageVM: ObservableObject {
             return
         }
 
-        let task = URLSession.shared.dataTask(with: url) { data, _, error in
-            
-//            A constante "task" tem um "guard let data" que anuncia que se "data" possuir valor, o mesmo é atribuído,
-//            mas também é necessário que erro seja nulo. Ou seja, só é utilizado o dado se não houver erro.
-//            O "return" finaliza a função se "error" receber algum valor
+        // A constante "task" tem um "guard let data" que anuncia que se "data" possuir valor, o mesmo é atribuído,
+        // mas também é necessário que erro seja nulo. Ou seja, só é utilizado o dado se não houver erro.
+        // O "return" finaliza a função se "error" receber algum valor
+        
+        
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Erro: \(error.localizedDescription)"
+                    self.isLoading = false
+                }
+                print("Erro: \(error.localizedDescription)")
+                return
+            }
 
-            guard let data = data, error == nil else { return }
-            
-            do {
-                let parsed = try JSONDecoder().decode(ViaCepModel.self, from: data)
-                
+            guard let response = response else {
                 DispatchQueue.main.async {
-                    self.address = parsed
+                    self.errorMessage = "Resposta nula do servidor."
                     self.isLoading = false
                 }
-            } catch {
+                print("Resposta nula do servidor.")
+                return
+            }
+
+            guard let statusCode = response.getStatusCode() else {
                 DispatchQueue.main.async {
-                    self.errorMessage = "Erro ao obter os dados da API"
+                    self.errorMessage = "Não foi possível obter o status code."
                     self.isLoading = false
                 }
-                print(error)
+                print("Não foi possível obter o status code.")
+                return
+            }
+
+            print("Status code: \(statusCode)")
+
+            switch statusCode {
+            case 200:
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        self.errorMessage = "Dados vazios."
+                        self.isLoading = false
+                    }
+                    print("Dados vazios.")
+                    return
+                }
+
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                       json["erro"] != nil {
+                        DispatchQueue.main.async {
+                            self.errorMessage = "CEP inválido."
+                            self.isLoading = false
+                        }
+                        print("CEP inválido.")
+                        return
+                    }
+
+                    let parsed = try JSONDecoder().decode(ViaCepModel.self, from: data)
+
+                    DispatchQueue.main.async {
+                        self.address = parsed
+                        self.isLoading = false
+                    }
+
+                } catch {
+                    DispatchQueue.main.async {
+                        self.errorMessage = "Erro ao decodificar os dados."
+                        self.isLoading = false
+                    }
+                    print("Erro de decodificação: \(error)")
+                }
+
+            case 400:
+                DispatchQueue.main.async {
+                    self.errorMessage = "CEP vazio ou inválido. (400)"
+                    self.isLoading = false
+                }
+                print("CEP vazio ou inválido. (400)")
+
+            default:
+                DispatchQueue.main.async {
+                    self.errorMessage = "Erro na API. Status code: \(statusCode)"
+                    self.isLoading = false
+                }
+                print("Erro na API. Status code: \(statusCode)")
             }
         }
+
         task.resume()
     }
 }
