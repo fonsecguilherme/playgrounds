@@ -10,9 +10,9 @@ import SwiftUI
 struct HomeViewPage: View{
     
     @State private var zipValue: String = ""
-    //    @FocusState private var emailFieldIsFocused: Bool = false
-    
     @StateObject var vm = HomePageVM()
+    let textFieldLimit: Int = 8
+    
     
     var body: some View {
         VStack{
@@ -23,18 +23,27 @@ struct HomeViewPage: View{
             )
             .keyboardType(.numberPad)
             .textFieldStyle(.roundedBorder)
-            .padding()
-            CustomButton(zipValue: zipValue,buttonTextLabel: "Procurar..." , vm: vm)
+            .padding(
+                .horizontal, 20
+            )
+            .onChange(of: zipValue) {
+                if zipValue.count > textFieldLimit{
+                    zipValue = String(zipValue.prefix(textFieldLimit))
+                }
+            }
+            Text("\(zipValue.count)/\(textFieldLimit)")
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.horizontal, 20)
+            
+            CustomButton(zipValue: zipValue,buttonTextLabel: "Procurar..." ,vm: vm)
+            
             Group {
                 if vm.isLoading {
                     ProgressView("Carregando...")
                 } else if let message = vm.errorMessage {
                     Text(message)
                 } else if vm.address != nil {
-                    
                     ResultView(vm: vm)
-                    
-//                    CustomCardView(logradouro: vm.safeAddress.logradouro, cep: vm.safeAddress.cep, cidade: String(vm.safeAddress.cep), estado: vm.safeAddress.estado)
                 } else {
                     Text("")
                 }
@@ -45,9 +54,11 @@ struct HomeViewPage: View{
 }
 
 #Preview {
-    let vm = HomePageVM()
-      vm.address = ViaCepModel(cep: "57305752", logradouro: "Casinha do guilherme", complemento: "Arapiraca", unidade: "Alagoas", bairro: "não possui", localidade: "cavaco", uf: "nordeste", estado: "AL", regiao: "NE", ddd: "79")
-      
-      return ResultView(vm: vm)
+//    let vm = HomePageVM()
+//      vm.address = ViaCepModel(cep: "57305752", logradouro: "Casinha do guilherme", complemento: "Arapiraca", unidade: "Alagoas", bairro: "não possui", localidade: "cavaco", uf: "nordeste", estado: "AL", regiao: "NE", ddd: "79")
+//      
+//      return ResultView(vm: vm)
+    
+    HomeViewPage().body
     
 }
