@@ -38,15 +38,17 @@ struct HomeViewPage: View{
             CustomButton(zipValue: zipValue,buttonTextLabel: "Procurar..." ,vm: vm)
             
             Group {
-                if vm.isLoading {
-                    ProgressView("Carregando...")
-                } else if let message = vm.errorMessage {
-                    Text(message)
-                } else if vm.address != nil {
-                    ResultView(vm: vm)
-                } else {
+                switch vm.state {
+                case .empty:
                     Text("")
+                case .loading:
+                    ProgressView("Carregando...")
+                case .error(let message):
+                    Text("Erro: \(message)")
+                case .success(let addressModel):
+                    ResultView(address: addressModel)
                 }
+                
             }
             
         }

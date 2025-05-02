@@ -10,11 +10,12 @@
 //Codable — É a soma dos dois anteriores. Aceita somente buscar todos os dados da API.
 
 
-struct ViaCepModel: Codable {
+struct AddressModel: Codable {
     let cep, logradouro, complemento, unidade: String
     let bairro, localidade, uf, estado: String
     let regiao, ddd: String
     
+    let error : String?
     
     var complementoOrDefault: String {
           complemento.isEmpty ? "Sem complemento" : complemento

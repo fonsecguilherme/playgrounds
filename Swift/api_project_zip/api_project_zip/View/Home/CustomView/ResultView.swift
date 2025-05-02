@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ResultView: View {    
-    let vm: HomePageVM
+    let address: AddressModel
     
     var body: some View {
         VStack {
-            CustomCardView(logradouro: vm.safeAddress.logradouro, cep: vm.safeAddress.cep, cidade: String(vm.safeAddress.cep), estado: vm.safeAddress.estado)
+            CustomCardView(logradouro: address.logradouro, cep: address.cep, cidade: String(address.cep), estado: address.estado)
                 .padding()
         }
     }
