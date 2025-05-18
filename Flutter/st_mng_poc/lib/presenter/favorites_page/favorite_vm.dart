@@ -26,4 +26,8 @@ class FavoriteVM {
       state.value = FavoritePageStates.populated(users);
     }
   }
+
+  Future<void> deleteUser(UserDto user) async {
+    await database.delete(user.toCompanion());
+  }
 }

@@ -27,4 +27,24 @@ class DriftDatabase implements IDatabase {
     }
     throw Exception('O tipo passado para o banco não é suportado');
   }
+
+  @override
+  Future<void> delete<T>(T data) async {
+    try {
+      if (data is int) {
+        await (_database.delete(_database.users)
+          ..where((user) => user.id.equals(data)))
+            .go();
+
+        await select();
+        return;
+      }
+
+      throw Exception('O tipo passado para o banco não é suportado: ${data.runtimeType}');
+    } catch (error, stacktrace) {
+      throw Exception(
+        'Erro ao deletar usuário: $error\n Stacktrace: $stacktrace',
+      );
+    }
+  }
 }

@@ -88,7 +88,5 @@ class HomePageVm {
 
       await database.insert(user.toCompanion());
     }
-
-    log('VM nome: $name e idade $age');
   }
 }

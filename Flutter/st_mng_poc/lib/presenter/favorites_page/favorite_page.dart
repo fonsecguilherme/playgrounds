@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:st_mng_poc/presenter/favorites_page/favorite_page_states.dart';
@@ -33,11 +35,37 @@ class _FavoritePageState extends State<FavoritePage> {
           );
         } else {
           return ListView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: state.users.length,
-            itemBuilder: (context, index) => Text(
-              'Meu nome é ${state.users.elementAt(index).name} e tenho ${state.users.elementAt(index).age} anos',
-              style: TextTheme.of(context).bodyLarge,
-            ),
+            itemBuilder: (context, index) {
+              final user = state.users.elementAt(index);
+
+              return ListTile(
+                leading: Text('${user.id}'),
+                title: Text(
+                  user.name,
+                  style: TextTheme.of(context).bodyLarge,
+                ),
+                subtitle: Text('Idade: ${user.age}'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          log('Editar ${user.name}');
+                        },
+                        icon: Icon(Icons.edit)),
+                    IconButton(
+                        onPressed: () {
+                          _favoritePageVm.deleteUser(user);
+
+                          log('Apagando... ${user.name}');
+                        },
+                        icon: Icon(Icons.delete)),
+                  ],
+                ),
+              );
+            },
           );
         }
       },
