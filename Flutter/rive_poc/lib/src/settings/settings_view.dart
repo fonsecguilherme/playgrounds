@@ -33,22 +33,18 @@ class _SettingsViewState extends State<SettingsView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = widget.controller.themeMode == ThemeMode.dark;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        // Glue the SettingsController to the theme selection DropdownButton.
-        //
-        // When a user selects a theme from the dropdown list, the
-        // SettingsController is updated, which rebuilds the MaterialApp.
         child: Column(
           children: [
             DropdownButton<ThemeMode>(
-              // Read the selected themeMode from the controller
               value: widget.controller.themeMode,
-              // Call the updateThemeMode method any time the user selects a theme.
               onChanged: widget.controller.updateThemeMode,
               items: const [
                 DropdownMenuItem(
@@ -75,7 +71,7 @@ class _SettingsViewState extends State<SettingsView> {
                   });
                 },
                 child: RiveAnimation.asset(
-                  widget.controller.themeMode == ThemeMode.dark
+                  isDark
                       ? 'assets/animated_icons_white.riv'
                       : 'assets/animated_icons.riv',
                   controllers: [_controller],
@@ -91,58 +87,60 @@ class _SettingsViewState extends State<SettingsView> {
           padding: const EdgeInsets.all(12),
           margin: const EdgeInsets.symmetric(horizontal: 24),
           decoration: BoxDecoration(
-            color: widget.controller.themeMode == ThemeMode.dark
-                ? Colors.white
-                : Colors.black,
+            color: !isDark ? Colors.white : Colors.black,
             borderRadius: const BorderRadius.all(Radius.circular(24)),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ...List.generate(
-                bottomNavs.length,
-                (index) => GestureDetector(
+            children: List.generate(
+              bottomNavs.length,
+              (index) {
+                final navItem = bottomNavs[index];
+                final isSelected = navItem == selectedBottomNav;
+
+                return GestureDetector(
                   onTap: () {
-                    bottomNavs[index].input!.change(true);
-                    if (bottomNavs[index] != selectedBottomNav) {
+                    navItem.input?.change(true);
+                    if (!isSelected) {
                       setState(() {
-                        selectedBottomNav = bottomNavs[index];
+                        selectedBottomNav = navItem;
                       });
                     }
                     Future.delayed(const Duration(seconds: 1), () {
-                      bottomNavs[index].input!.change(false);
+                      navItem.input?.change(false);
                     });
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // TODO: Animated Bar
                       SizedBox(
                         height: 36,
                         width: 36,
                         child: Opacity(
-                          opacity:
-                              bottomNavs[index] == selectedBottomNav ? 1 : 0.5,
+                          opacity: isSelected ? 1 : 0.5,
                           child: RiveAnimation.asset(
-                            bottomNavs[index].src,
-                            artboard: bottomNavs[index].artboard,
+                            isDark ? navItem.srcLight : navItem.srcDark,
+                            key: ValueKey(
+                              '${navItem.artboard}_${isDark ? "light" : "dark"}',
+                            ),
+                            artboard: navItem.artboard,
                             onInit: (artboard) {
-                              StateMachineController controller =
-                                  RiveUtils.getRiveController(artboard,
-                                      stateMachineName:
-                                          bottomNavs[index].stateMachineName);
-
-                              bottomNavs[index].input =
-                                  controller.findSMI("active") as SMIBool;
+                              final controller = RiveUtils.getRiveController(
+                                artboard,
+                                stateMachineName: navItem.stateMachineName,
+                              );
+                              final input =
+                                  controller.findSMI('active') as SMIBool;
+                              navItem.setInput = input;
                             },
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
-              )
-            ],
+                );
+              },
+            ),
           ),
         ),
       ),
