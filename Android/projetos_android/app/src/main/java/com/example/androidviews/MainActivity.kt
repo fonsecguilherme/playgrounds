@@ -5,7 +5,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.androidviews.databinding.ActivityMainBinding
+import com.example.androidviews.databinding.FragmentFirstBinding
+import com.example.androidviews.databinding.FragmentSecondBinding
+import com.example.androidviews.databinding.FragmentThirdBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,6 +21,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        val firstFragment = FirstFragment()
+        val secondFragment = SecondFragment()
+        val thirdFragment = ThirdFragment()
+
+        setCurrentFragment(firstFragment)
+
 
         enableEdgeToEdge()
         setContentView(binding.root)
@@ -30,6 +41,18 @@ class MainActivity : AppCompatActivity() {
         val botaoSomar = binding.activityMainIncrementButton
         val botaoSubtrair = binding.activityMainDecrementButton
 
+        val navbar = binding.bottomNavigationView
+
+        navbar.setOnItemSelectedListener() {
+            when(it.itemId){
+                R.id.profile -> setCurrentFragment(firstFragment)
+                R.id.home -> setCurrentFragment(secondFragment)
+                R.id.settings -> setCurrentFragment(thirdFragment)
+            }
+            true
+        }
+
+
         botaoSomar.setOnClickListener {
             contador.text = "${++contadorValue}"
         }
@@ -37,5 +60,10 @@ class MainActivity : AppCompatActivity() {
         botaoSubtrair.setOnClickListener {
             contador.text = "${--contadorValue}"
         }
+    }
+    private fun setCurrentFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.flFragment, fragment)
+            .commit()
     }
 }
