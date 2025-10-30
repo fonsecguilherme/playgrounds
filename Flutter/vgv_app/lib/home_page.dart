@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
               return const Center(child: CircularProgressIndicator());
             case UserLoaded():
               return ListView.builder(
+                key: const Key('UserLoadedKey'),
                 itemCount: state.users.length,
                 itemBuilder: (context, index) {
                   final user = state.users[index];
