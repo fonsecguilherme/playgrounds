@@ -12,8 +12,6 @@ import 'package:vgv_app/model/user_model.dart';
 
 class MockUserBloc extends MockBloc<UserEvent, UserState> implements UserBloc {}
 
-class FakeUserModel extends Fake implements UserModel {}
-
 late UserBloc _userBloc;
 
 void main() {
@@ -22,10 +20,6 @@ void main() {
 
     when(() => _userBloc.state).thenReturn(UserInitial());
     whenListen(_userBloc, Stream<UserState>.fromIterable([UserInitial()]));
-  });
-
-  setUpAll(() {
-    registerFallbackValue(FakeUserModel());
   });
 
   testWidgets('Should fin inital widget', (tester) async {
