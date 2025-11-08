@@ -6,7 +6,7 @@ Este documento contém uma coleção de exercícios práticos para aprimorar sua
 
 ## 🟢 Nível Iniciante
 
-### 1. Contar vogais
+### 1. Contar vogais 🟢
 Conte quantas vogais (`a, e, i, o, u`) aparecem em uma string (case-insensitive).  
 **Exemplo:** `"Olá Mundo"` → `3`  
 **Dica:** normalize para minúsculas e use um `Set` de vogais.  
@@ -14,7 +14,7 @@ Conte quantas vogais (`a, e, i, o, u`) aparecem em uma string (case-insensitive)
 
 ---
 
-### 2. Reverter palavras
+### 2. Reverter palavras 🟢
 Dada uma frase, reverta cada palavra mantendo a ordem das palavras.  
 **Exemplo:** `"eu amo dart"` → `"ue oma trad"`  
 **Dica:** use `split`, `map` e `join`.  
@@ -22,7 +22,7 @@ Dada uma frase, reverta cada palavra mantendo a ordem das palavras.
 
 ---
 
-### 3. Palíndromo (somente letras)
+### 3. Palíndromo (somente letras) 🟡
 Verifique se uma string é palíndroma considerando apenas letras e ignorando maiúsculas/minúsculas.  
 **Exemplo:** `"A man, a plan, a canal: Panama!"` → `true`  
 **Dica:** filtre letras e compare com o reverso.  
@@ -30,7 +30,7 @@ Verifique se uma string é palíndroma considerando apenas letras e ignorando ma
 
 ---
 
-### 4. Capitalizar frase
+### 4. Capitalizar frase 🟢
 Transforme `"olá mundo. isso é dart!"` em `"Olá Mundo. Isso É Dart!"`.  
 **Dica:** capitalize a primeira letra de cada palavra.  
 **Função sugerida:** `String capitalizeWords(String s)`
